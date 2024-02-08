@@ -1,0 +1,47 @@
+﻿name: General CI
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [ closed ]
+
+permissions:
+  contents: read
+  actions: read
+  checks: write
+
+jobs:
+  build:
+    if: ${{ github.event.pull_request.merged }}
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        dotnet-version: [ '8.0.x' ]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+        name: Setup dotnet ${{ matrix.dotnet-version }}
+      - uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
+        name: Setup cache for NuGet dependencies
+      - name: Restore project dependencies
+        run: dotnet restore
+      - name: Build project
+        run: dotnet build --no-restore
+      - name: Test project
+        run: dotnet test --no-build --no-restore --logger "trx;LogFilename=test-results-${{ matrix.dotnet-version }}.trx" --results-directory:"./TestResults-${{ matrix.dotnet-version }}"
+        id: test_project
+      - name: Run reporter
+        uses: dorny/test-reporter@v1
+        with:
+          name: XUnit tests (${{ matrix.dotnet-version }})
+          path: './TestResults-${{ matrix.dotnet-version }}/test-results-${{ matrix.dotnet-version }}.trx'
+          reporter: 'dotnet-trx'
+          token: ${{ github.token }}

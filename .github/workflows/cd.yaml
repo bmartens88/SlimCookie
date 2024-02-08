@@ -1,0 +1,33 @@
+name: General CD
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  semantic_release:
+    runs-on: 'ubuntu-latest'
+    strategy:
+      matrix:
+        dotnet-version: ['8.0.x']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+        name: Setup dotnet ${{ matrix.dotnet-version }}
+      - uses: actions/cache@v4
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/*.csproj') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget
+        name: Setup cache for NuGet dependencies
+      - uses: TriPSs/conventional-changelog-action@v5.2.0
+        name: Conventional changelog action
+        id: changelog
+      - uses: ncipollo/release-action@v1.14.0
+        with:
+          body: ${{ steps.changelog.outputs.clean_changelog }}

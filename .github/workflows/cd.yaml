@@ -27,7 +27,15 @@ jobs:
         name: Setup cache for NuGet dependencies
       - uses: TriPSs/conventional-changelog-action@v5.2.0
         name: Conventional changelog action
-        id: changelog
-      - uses: ncipollo/release-action@v1.14.0
         with:
+          version-file: ./version.json
+          skip-commit: true
+        id: changelog
+      - uses: actions/create-release@v1
+        if: ${{ steps.changelog.outputs.skipped == 'false' }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.github_token }}
+        with:
+          tag_name: ${{ steps.changelog.outputs.tag }}
+          release_name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}

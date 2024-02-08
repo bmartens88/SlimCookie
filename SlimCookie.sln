@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "lib", "lib", "{C230C346-26B0-4367-91F4-8C8FEE246971}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimCookie", "lib\SlimCookie\SlimCookie.csproj", "{E35CF5AA-A4EC-4BE5-8679-DF6A3EA7EEDE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{ED4231F3-A3C2-4366-A157-4447B4B31686}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SlimCookie.Unit.Tests", "tests\SlimCookie.Unit.Tests\SlimCookie.Unit.Tests.csproj", "{92506849-E03F-478E-934A-246E36D88BA7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E35CF5AA-A4EC-4BE5-8679-DF6A3EA7EEDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E35CF5AA-A4EC-4BE5-8679-DF6A3EA7EEDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E35CF5AA-A4EC-4BE5-8679-DF6A3EA7EEDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E35CF5AA-A4EC-4BE5-8679-DF6A3EA7EEDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{92506849-E03F-478E-934A-246E36D88BA7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{92506849-E03F-478E-934A-246E36D88BA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{92506849-E03F-478E-934A-246E36D88BA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{92506849-E03F-478E-934A-246E36D88BA7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E35CF5AA-A4EC-4BE5-8679-DF6A3EA7EEDE} = {C230C346-26B0-4367-91F4-8C8FEE246971}
+		{92506849-E03F-478E-934A-246E36D88BA7} = {ED4231F3-A3C2-4366-A157-4447B4B31686}
+	EndGlobalSection
+EndGlobal

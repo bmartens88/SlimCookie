@@ -28,7 +28,6 @@ jobs:
       - uses: TriPSs/conventional-changelog-action@v5.2.0
         name: Conventional changelog action
         with:
-          version-file: ./version.json
           skip-commit: true
         id: changelog
       - uses: ncipollo/release-action@v1

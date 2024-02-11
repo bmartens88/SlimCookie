@@ -43,7 +43,7 @@ jobs:
         name: Upload NuGet package for publishing
         with:
           name: NuGetPackage
-          path: ./*.nupkg
+          path: ./lib/**/*.nupkg
   publish:
     needs: semantic_release
     name: Publish to GitHub Packages

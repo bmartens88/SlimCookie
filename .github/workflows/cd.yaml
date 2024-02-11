@@ -56,10 +56,11 @@ jobs:
         name: Download build artifact
         with:
           name: NuGetPackage
+        id: download
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - run: dotnet nuget add source --username bmartens88 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/bmartens88/index.json"
         name: Configure NuGet feed
-      - run: dotnet nuget push ./*.nupkg --api-key ${{ secrets.NUGET_FEED_TOKEN }} --source "github"
+      - run: dotnet nuget push ${{ steps.download.outputs.download-path }}/*.nupkg --api-key ${{ secrets.NUGET_FEED_TOKEN }} --source "github"
         name: Publish NuGet package

@@ -29,6 +29,7 @@ jobs:
         name: Conventional changelog action
         with:
           skip-commit: true
+          tag-prefix: ''
         id: changelog
       - uses: ncipollo/release-action@v1
         if: ${{ steps.changelog.outputs.skipped == 'false' }}

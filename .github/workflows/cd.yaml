@@ -44,7 +44,7 @@ jobs:
           name: NuGetPackage
           path: ./*.nupkg
   publish:
-    needs: semantic-release
+    needs: semantic_release
     name: Publish to GitHub Packages
     runs-on: ubuntu-latest
     strategy:

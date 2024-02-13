@@ -38,16 +38,19 @@ jobs:
           name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
       - name: Build NuGet package
-        run: dotnet build -c Release ./lib/**/*.csproj && dotnet pack --no-build --no-restore --include-source --include-symbols -p:PackageVersion=${{ steps.changelog.outputs.tag }}
+        run: dotnet build -c Release ./lib/**/*.csproj && dotnet pack --no-build --no-restore -p:PackageVersion=${{ steps.changelog.outputs.tag }}
       - uses: actions/upload-artifact@v4
         name: Upload NuGet package for publishing
         with:
           name: NuGetPackage
-          path: ./*.nupkg
+          path: ./lib/**/*.nupkg
   publish:
     needs: semantic_release
     name: Publish to GitHub Packages
     runs-on: ubuntu-latest
+    permissions: 
+      contents: read
+      packages: write
     strategy:
       matrix:
         dotnet-version: [ '8.0.x' ]
@@ -59,7 +62,8 @@ jobs:
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
-      - run: dotnet nuget add source --username bmartens88 --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/bmartens88/index.json"
-        name: Configure NuGet feed
-      - run: dotnet nuget push ./*.nupkg --api-key ${{ secrets.NUGET_FEED_TOKEN }} --source "github"
+          source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
+        env:
+          NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - run: dotnet nuget push NuGetPackage/*.nupkg
         name: Publish NuGet package

@@ -38,12 +38,12 @@ jobs:
           name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
       - name: Build NuGet package
-        run: dotnet build -c Release ./lib/**/*.csproj && dotnet pack --no-build --no-restore -p:PackageVersion=${{ steps.changelog.outputs.tag }}
+        run: dotnet pack ./lib/SlimCookie/SlimCookie.csproj -c Release -p:PackageVersion=${{ steps.changelog.outputs.tag }}
       - uses: actions/upload-artifact@v4
         name: Upload NuGet package for publishing
         with:
           name: NuGetPackage
-          path: ./lib/**/*.nupkg
+          path: ./lib/SlimCookie/bin/Release/
   publish:
     needs: semantic_release
     name: Publish to GitHub Packages

@@ -29,6 +29,7 @@ jobs:
         name: Conventional changelog action
         with:
           skip-commit: true
+          tag-prefix: ''
         id: changelog
       - uses: ncipollo/release-action@v1
         if: ${{ steps.changelog.outputs.skipped == 'false' }}
@@ -37,12 +38,12 @@ jobs:
           name: ${{ steps.changelog.outputs.tag }}
           body: ${{ steps.changelog.outputs.clean_changelog }}
       - name: Build NuGet package
-        run: dotnet build -c Release ./lib/**/*.csproj && dotnet pack --no-build --no-restore --include-source --include-symbols -p:PackageVersion=${{ steps.changelog.outputs.tag }}
+        run: dotnet build -c Release ./lib/**/*.csproj && dotnet pack --no-build --no-restore -p:PackageVersion=${{ steps.changelog.outputs.tag }}
       - uses: actions/upload-artifact@v4
         name: Upload NuGet package for publishing
         with:
           name: NuGetPackage
-          path: ./*.nupkg
+          path: ./lib/**/*.nupkg
   publish:
     needs: semantic_release
     name: Publish to GitHub Packages

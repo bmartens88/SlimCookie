@@ -59,11 +59,12 @@ jobs:
         name: Download build artifact
         with:
           name: NuGetPackage
+        id: download
       - uses: actions/setup-dotnet@v4
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
           source-url: https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json
         env:
           NUGET_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - run: dotnet nuget push NuGetPackage/*.nupkg
+      - run: dotnet nuget push ${{ steps.download.outputs.download-path }}/*.nupkg
         name: Publish NuGet package
